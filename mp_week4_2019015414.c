@@ -13,37 +13,38 @@ void delay(unsigned long x) {
 }
 
 int main(void){
-	int count = 0;
+	unsigned int count = 0, time;
 	DDRB = 0xFF;
 	DDRG = 0xFF;
 
 	PORTB = 0x00;
 	PORTG = 0xFF;
-
 	while(1) {
-		delay(10000);	
-		count++;
-	}
-	while(1) {
-		PORTG |= 0x0F;
-		PORTG &= ~FND_C3;
-		DDRB = Font[count/1000];
-		delay(100);
+		time = 1000;
+		while(time--) {
+			PORTG |= 0x0F;
+			PORTG &= ~FND_C3;
+			PORTB = Font[count%10];
+			delay(100);
 	
-		PORTG |= 0x0F;
-		PORTG &= ~FND_C2;
-		DDRB = Font[(count/100)%10];
-		delay(100);
+			PORTG |= 0x0F;
+			PORTG &= ~FND_C2;
+			PORTB = Font[(count/10)%10];
+			delay(100);
 		
-		PORTG |= 0x0F;
-		PORTG &= ~FND_C1;
-		DDRB = Font[(count/10)%10];
-		delay(100);
+			PORTG |= 0x0F;
+			PORTG &= ~FND_C1;
+			PORTB = Font[(count/100)%10];
+			delay(100);
 		
-		PORTG |= 0x0F;
-		PORTG &= ~FND_C0;
-		DDRB = Font[count%10];
-		delay(100);
+			PORTG |= 0x0F;
+			PORTG &= ~FND_C0;
+			PORTB = Font[count/1000];
+			delay(100);
+		}
+		count++;
+		if(count == 1000) break;
 	}
 	return 0;
 }
+
